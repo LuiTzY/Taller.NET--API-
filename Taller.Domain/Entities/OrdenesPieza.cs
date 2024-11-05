@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TallerAPI.Models;
+namespace Taller.Domain.entities;
 
 public partial class OrdenesPieza
 {

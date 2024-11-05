@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace TallerAPI.Models;
+namespace Taller.Domain.entities;
 
 public partial class TallerBdContext : DbContext
 {
