@@ -1,21 +1,26 @@
 using Microsoft.EntityFrameworkCore;
-using TallerAPI.Models;
+using Taller.infraestructure;
+using Taller.infraestructure.Repositories;
+using Taller.infraestructure.interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IEmpleadoRepository, EmpleadoRepository>();
+builder.Services.AddScoped<IHistorialMantenimientoRepository, HistorialMantenimientoRepository>();
+builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<TallerBdContext>(options =>
+builder.Services.AddDbContext<TallerVehiculosContext>(options =>
        options.UseSqlServer(builder.Configuration.GetConnectionString("TallerBdContext")));
 
 var app = builder.Build();
-
-//inyectamos el db context
-
 
 
 // Configure the HTTP request pipeline.
