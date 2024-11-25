@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Taller.Domain.Entities;
 using Taller.infraestructure.interfaces;
+using Taller.infraestructure.Context;
 
 namespace Taller.infraestructure.Repositories
 {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Taller.Domain.Entities;
 using Taller.infraestructure.interfaces;
+using Taller.infraestructure.Context;
 
 namespace Taller.infraestructure.Repositories
 {

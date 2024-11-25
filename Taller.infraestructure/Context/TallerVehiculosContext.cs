@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Taller.Domain.Entities;
 
-namespace Taller.infraestructure;
+namespace Taller.infraestructure.Context;
 
 public partial class TallerVehiculosContext : DbContext
 {
@@ -28,9 +28,11 @@ public partial class TallerVehiculosContext : DbContext
 
     public virtual DbSet<Pieza> Piezas { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
     public virtual DbSet<Vehiculo> Vehiculos { get; set; }
 
- 
+  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Cliente>(entity =>
@@ -80,21 +82,25 @@ public partial class TallerVehiculosContext : DbContext
 
         modelBuilder.Entity<OrdenPieza>(entity =>
         {
-            entity.HasKey(e => new { e.OrdenId, e.PiezaId }).HasName("PK__OrdenPie__8B358862F61DC9B2");
+            entity.HasKey(e => e.OrdenPiezaId).HasName("PK__OrdenPie__CDFFF4EA52659DFC");
 
+            entity.Property(e => e.OrdenPiezaId).HasColumnName("OrdenPiezaID");
+            entity.Property(e => e.Costo).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.FechaUso)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
             entity.Property(e => e.OrdenId).HasColumnName("OrdenID");
             entity.Property(e => e.PiezaId).HasColumnName("PiezaID");
-            entity.Property(e => e.Costo).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.Orden).WithMany(p => p.OrdenPiezas)
                 .HasForeignKey(d => d.OrdenId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__OrdenPiez__Orden__4316F928");
+                .HasConstraintName("FK__OrdenPiez__Orden__5DCAEF64");
 
             entity.HasOne(d => d.Pieza).WithMany(p => p.OrdenPiezas)
                 .HasForeignKey(d => d.PiezaId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__OrdenPiez__Pieza__440B1D61");
+                .HasConstraintName("FK__OrdenPiez__Pieza__5EBF139D");
         });
 
         modelBuilder.Entity<OrdenesTrabajo>(entity =>
@@ -129,6 +135,21 @@ public partial class TallerVehiculosContext : DbContext
             entity.Property(e => e.Descripcion).HasMaxLength(200);
             entity.Property(e => e.Nombre).HasMaxLength(100);
             entity.Property(e => e.Precio).HasColumnType("decimal(18, 2)");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Users__3213E83F17EC54BA");
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Password)
+                .HasMaxLength(200)
+                .IsUnicode(false)
+                .HasColumnName("password");
+            entity.Property(e => e.Username)
+                .HasMaxLength(40)
+                .IsUnicode(false)
+                .HasColumnName("username");
         });
 
         modelBuilder.Entity<Vehiculo>(entity =>
