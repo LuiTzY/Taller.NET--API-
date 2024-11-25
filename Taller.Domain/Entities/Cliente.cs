@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Taller.Domain.entities;
+namespace Taller.Domain.Entities;
 
 public partial class Cliente
 {
@@ -9,11 +9,13 @@ public partial class Cliente
 
     public string Nombre { get; set; } = null!;
 
+    public string Apellido { get; set; } = null!;
+
+    public string? Direccion { get; set; }
+
     public string? Telefono { get; set; }
 
     public string? Email { get; set; }
 
-    public string? Direccion { get; set; }
-
-    public virtual ICollection<Vehiculo>? Vehiculos { get; set; } = new List<Vehiculo>();
+    public virtual ICollection<Vehiculo> Vehiculos { get; set; } = new List<Vehiculo>();
 }

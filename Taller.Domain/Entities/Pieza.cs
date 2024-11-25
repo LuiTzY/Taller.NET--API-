@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Taller.Domain.entities;
+namespace Taller.Domain.Entities;
 
 public partial class Pieza
 {
@@ -11,9 +11,7 @@ public partial class Pieza
 
     public string? Descripcion { get; set; }
 
-    public decimal Precio { get; set; }
+    public decimal? Precio { get; set; }
 
-    public int CantidadEnInventario { get; set; }
-
-    public virtual ICollection<OrdenesPieza> OrdenesPiezas { get; set; } = new List<OrdenesPieza>();
+    public virtual ICollection<OrdenPieza> OrdenPiezas { get; set; } = new List<OrdenPieza>();
 }
