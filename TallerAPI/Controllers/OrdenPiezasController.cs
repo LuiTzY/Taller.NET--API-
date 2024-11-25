@@ -7,56 +7,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Taller.Domain.Entities;
-using Taller.infraestructure;
-using Taller.infraestructure.interfaces;
-using Taller.infraestructure.Repositories;
+using  Taller.infraestructure.interfaces;
 
 namespace TallerAPI.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class PiezasController : ControllerBase
+    public class OrdenPiezasController : ControllerBase
     {
-        private readonly IPiezaRepository _PiezaRepositoryRepository;
+        private readonly IOrdenPiezaRepository _ordenPiezaRepository;
 
-        public PiezasController(IPiezaRepository PiezaRepositoryRepository)
+        public OrdenPiezasController(IOrdenPiezaRepository ordenPiezaRepository)
         {
-            _PiezaRepositoryRepository = PiezaRepositoryRepository;
+            _ordenPiezaRepository = ordenPiezaRepository;
         }
 
-        // GET: api/Piezas
+        // GET: api/OrdenPiezas
         [HttpGet]
-        public async Task<IEnumerable<Pieza>> GetPiezas()
+        public async Task<IEnumerable<OrdenPieza>> GetOrdenPiezas()
         {
-            return await _PiezaRepositoryRepository.GetAllPiezasAsync();
+            return await _ordenPiezaRepository.GetAllOrdenPiezaAsync();
         }
 
-        // GET: api/Piezas/5
+        // GET: api/OrdenPiezas/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pieza>> GetPieza(int id)
+        public async Task<ActionResult<OrdenPieza>> GetOrdenPieza(int id)
         {
-            var pieza = await _PiezaRepositoryRepository.GetPiezaAsync(id);
+            var ordenPieza = await _ordenPiezaRepository.GetOrdenPiezaAsync(id);
 
-            if (pieza == null)
+            if (ordenPieza == null)
             {
                 return NotFound();
             }
 
-            return pieza;
+            return ordenPieza;
         }
 
-        // PUT: api/Piezas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/OrdenPiezas/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPieza(int id, Pieza pieza)
+        public async Task<IActionResult> PutOrdenPieza(int id, OrdenPieza ordenPieza)
         {
             try
             {
-                var isUpdated = await _PiezaRepositoryRepository.UpdatPiezaAsync(id, pieza);
+                var isUpdated = await _ordenPiezaRepository.UpdateOrdenPiezaAsync(id, ordenPieza);
 
                 if (!isUpdated)
                 {
-                    return NotFound(new { Message = $"La pieza con ID {id} no fue encontrado." });
+                    return NotFound(new { Message = $"No se pudo encontrar la orden con el ID {id} no fue encontrado." });
                 }
 
                 return NoContent();
@@ -68,21 +65,20 @@ namespace TallerAPI.Controllers
             }
         }
 
-        // POST: api/Piezas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/OrdenPiezas
         [HttpPost]
-        public async Task<ActionResult<Pieza>> PostPieza(Pieza pieza)
+        public async Task<ActionResult<OrdenPieza>> PostOrdenPieza(OrdenPieza ordenPieza)
         {
             try
             {
                 // Agregar la pieza usando el repositorio
-                await _PiezaRepositoryRepository.addPiezaAsync(pieza);
+                await _ordenPiezaRepository.addOrdenPiezaAsync(ordenPieza);
 
                 // Retornar la respuesta con la pieza creado
                 return CreatedAtAction(
-                    nameof(GetPieza), //Metodo que devuelve la pieza 
-                    new { id = pieza.PiezaId },
-                    pieza
+                    nameof(GetOrdenPieza), //Metodo que devuelve la pieza 
+                    new { id = ordenPieza.OrdenPiezaId },
+                    ordenPieza
                 );
             }
             //Capturamos errores de la db
@@ -98,17 +94,17 @@ namespace TallerAPI.Controllers
             }
         }
 
-        // DELETE: api/Piezas/5
+        // DELETE: api/OrdenPiezas/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePieza(int id)
+        public async Task<IActionResult> DeleteOrdenPieza(int id)
         {
             try
             {
-                var isDeleted = await _PiezaRepositoryRepository.DeletePiezaAsync(id);
+                var isDeleted = await _ordenPiezaRepository.DeleteOrdenPiezaAsync(id);
 
                 if (!isDeleted)
                 {
-                    return NotFound(new { Message = $"La pieza con ID {id} no fue encontrado." });
+                    return NotFound(new { Message = $"La orden no se pudo encontrar con ID {id} no fue encontrado." });
                 }
 
                 return NoContent(); //  exitosa
@@ -119,5 +115,7 @@ namespace TallerAPI.Controllers
                 return StatusCode(500, new { Message = $"Error interno: {ex.Message}" });
             }
         }
+
+        
     }
 }

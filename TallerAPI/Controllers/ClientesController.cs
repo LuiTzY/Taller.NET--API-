@@ -1,107 +1,129 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Taller.Domain.entities;
+using NuGet.Protocol;
+using Taller.Domain.Entities;
+using Taller.infraestructure.interfaces;
+using Taller.infraestructure.Repositories;
 
 namespace TallerAPI.Controllers
-{    
+{
     [ApiController]
     [Route("[controller]")]
     public class ClientesController : ControllerBase
     {
-        private readonly TallerBdContext _context;
+        private readonly IClienteRepository _ClientRepository;
 
-        public ClientesController(TallerBdContext context)
+        public ClientesController(IClienteRepository ClientRepo)
         {
-            _context = context;
+            _ClientRepository = ClientRepo;
         }
 
         // GET: api/Clientes
-        [HttpGet("GetClientes")]
-        public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
+        [HttpGet("clients/")]
+        public async Task<ActionResult<IEnumerable<Cliente>>> GetClients()
         {
-            return await _context.Clientes.ToListAsync();
+            var clients = await _ClientRepository.GetAllClientsAsync();
+
+            return Ok(clients);
         }
 
-        // GET: api/Clientes/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Cliente>> GetCliente(int id)
-        {
-            var cliente = await _context.Clientes.FindAsync(id);
 
-            if (cliente == null)
+        // GET: api/Clientes/5
+        [HttpGet("client/{id}")]
+        public async Task<ActionResult<Cliente>> GetClient(int id)
+        {
+            var client = await _ClientRepository.GetClientAsync(id);
+
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return cliente;
+            return Ok(client);
         }
 
-        // PUT: api/Clientes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCliente(int id, Cliente cliente)
-        {
-            if (id != cliente.ClienteId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(cliente).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ClienteExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/Clientes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
+        [HttpPost("client")]
+        public async Task<ActionResult<Cliente>> CreateClient(Cliente client)
         {
-            _context.Clientes.Add(cliente);
-            await _context.SaveChangesAsync();
+            try
+            {
+                // Agregar el cliente usando el repositorio
+                await _ClientRepository.addClientAsync(client);
 
-            return CreatedAtAction("GetCliente", new { id = cliente.ClienteId }, cliente);
+                // Retornar la respuesta con el cliente creado
+                return CreatedAtAction(
+                    nameof(GetClient), //Metodo que devuelve un cliente
+                    new { id = client.ClienteId }, 
+                    client 
+                );
+            }
+            //Capturamos errores de la db
+            catch (DbException ex)
+            {
+                // Error específico al interactuar con la base de datos
+                return StatusCode(500, $"Database error: {ex.Message}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
+
+
+        [HttpPut("client/{id}")]
+        public async Task<IActionResult> UpdateClient(int id, Cliente client)
+        {
+            try
+            {
+                var isUpdated = await _ClientRepository.UpdateClientAsync(id, client);
+
+                if (!isUpdated)
+                {
+                    return NotFound(new { Message = $"El cliente con ID {id} no fue encontrado." });
+                }
+
+                return NoContent(); 
+            }
+            catch (Exception ex)
+            {
+                // Manejar errores inesperados
+                return StatusCode(500, new { Message = $"Error interno: {ex.Message}" });
+            }
+        }
+
 
         // DELETE: api/Clientes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
-            var cliente = await _context.Clientes.FindAsync(id);
-            if (cliente == null)
+            try
             {
-                return NotFound();
+                var isDeleted = await _ClientRepository.DeleteClientAsync(id);
+
+                if (!isDeleted)
+                {
+                    return NotFound(new { Message = $"El cliente con ID {id} no fue encontrado." });
+                }
+
+                return NoContent(); // Eliminación exitosa
             }
-
-            _context.Clientes.Remove(cliente);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                // Manejar cualquier excepción genérica
+                return StatusCode(500, new { Message = $"Error interno: {ex.Message}" });
+            }
         }
 
-        private bool ClienteExists(int id)
-        {
-            return _context.Clientes.Any(e => e.ClienteId == id);
-        }
+
     }
 }

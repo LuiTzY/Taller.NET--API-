@@ -9,54 +9,51 @@ using Microsoft.EntityFrameworkCore;
 using Taller.Domain.Entities;
 using Taller.infraestructure;
 using Taller.infraestructure.interfaces;
-using Taller.infraestructure.Repositories;
-
 namespace TallerAPI.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PiezasController : ControllerBase
+    public class VehiculosController : ControllerBase
     {
-        private readonly IPiezaRepository _PiezaRepositoryRepository;
+        private readonly IVehiculoRepository _VehiculoRepository;
 
-        public PiezasController(IPiezaRepository PiezaRepositoryRepository)
+        public VehiculosController(IVehiculoRepository VehiculoRepository)
         {
-            _PiezaRepositoryRepository = PiezaRepositoryRepository;
+            _VehiculoRepository = VehiculoRepository;
         }
 
-        // GET: api/Piezas
+        // GET: api/Vehiculoes
         [HttpGet]
-        public async Task<IEnumerable<Pieza>> GetPiezas()
+        public async Task<IEnumerable<Vehiculo>> GetVehiculos()
         {
-            return await _PiezaRepositoryRepository.GetAllPiezasAsync();
+            return await _VehiculoRepository.GetAllVehiculosAsync();
         }
 
-        // GET: api/Piezas/5
+        // GET: api/Vehiculoes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Pieza>> GetPieza(int id)
+        public async Task<ActionResult<Vehiculo>> GetVehiculo(int id)
         {
-            var pieza = await _PiezaRepositoryRepository.GetPiezaAsync(id);
+            var vehiculo = await _VehiculoRepository.GetVehiculoAsync(id);
 
-            if (pieza == null)
+            if (vehiculo == null)
             {
                 return NotFound();
             }
 
-            return pieza;
+            return vehiculo;
         }
 
-        // PUT: api/Piezas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // PUT: api/Vehiculoes/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutPieza(int id, Pieza pieza)
+        public async Task<IActionResult> PutVehiculo(int id, Vehiculo vehiculo)
         {
             try
             {
-                var isUpdated = await _PiezaRepositoryRepository.UpdatPiezaAsync(id, pieza);
+                var isUpdated = await _VehiculoRepository.UpdateVehiculoAsync(id, vehiculo);
 
                 if (!isUpdated)
                 {
-                    return NotFound(new { Message = $"La pieza con ID {id} no fue encontrado." });
+                    return NotFound(new { Message = $"El empleado con ID {id} no fue encontrado." });
                 }
 
                 return NoContent();
@@ -68,21 +65,20 @@ namespace TallerAPI.Controllers
             }
         }
 
-        // POST: api/Piezas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // POST: api/Vehiculoes
         [HttpPost]
-        public async Task<ActionResult<Pieza>> PostPieza(Pieza pieza)
+        public async Task<ActionResult<Vehiculo>> PostVehiculo(Vehiculo vehiculo)
         {
             try
             {
-                // Agregar la pieza usando el repositorio
-                await _PiezaRepositoryRepository.addPiezaAsync(pieza);
+                // Agregar el cliente usando el repositorio
+                await _VehiculoRepository.addVehiculotAsync(vehiculo);
 
-                // Retornar la respuesta con la pieza creado
+                // Retornar la respuesta con el empleado creado
                 return CreatedAtAction(
-                    nameof(GetPieza), //Metodo que devuelve la pieza 
-                    new { id = pieza.PiezaId },
-                    pieza
+                    nameof(GetVehiculo), //Metodo que devuelve un cliente
+                    new { id = vehiculo.VehiculoId },
+                    vehiculo
                 );
             }
             //Capturamos errores de la db
@@ -98,17 +94,18 @@ namespace TallerAPI.Controllers
             }
         }
 
-        // DELETE: api/Piezas/5
+        // DELETE: api/Vehiculos/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePieza(int id)
+        public async Task<IActionResult> DeleteVehiculo(int id)
         {
+
             try
             {
-                var isDeleted = await _PiezaRepositoryRepository.DeletePiezaAsync(id);
+                var isDeleted = await _VehiculoRepository.DeleteVehiculoAsync(id);
 
                 if (!isDeleted)
                 {
-                    return NotFound(new { Message = $"La pieza con ID {id} no fue encontrado." });
+                    return NotFound(new { Message = $"El cliente con ID {id} no fue encontrado." });
                 }
 
                 return NoContent(); //  exitosa
@@ -119,5 +116,7 @@ namespace TallerAPI.Controllers
                 return StatusCode(500, new { Message = $"Error interno: {ex.Message}" });
             }
         }
+
+       
     }
 }
