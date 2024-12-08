@@ -1,0 +1,38 @@
+<div class="card m-4">
+
+    <div class="container mt-4">
+        <h2 class="text-center">Add New Vehicle</h2>
+        <form [formGroup]="vehicleForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label  for="ClienteId">Cliente ID</label>
+                <select class="form-select" formControlName="ClienteId">
+                    @for (client of clients; track $index) {
+                        <option [value]="client.clienteId">ID: {{client.clienteId}} - Nombre: {{client.nombre}} - Email: {{client.email}}</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Marca">Marca</label>
+                <input type="text" id="Marca" class="form-control" formControlName="Marca">
+            </div>
+            <div class="form-group">
+                <label for="Modelo">Modelo</label>
+                <input type="text" id="Modelo" class="form-control" formControlName="Modelo">
+            </div>
+            <!-- <div class="form-group">
+                <label for="Año">Año</label>
+                <input type="number" id="Año" class="form-control" formControlName="Año">
+            </div> -->
+            <div class="form-group">
+                <label for="Placa">Placa</label>
+                <input type="text" id="Placa" class="form-control" formControlName="Placa">
+            </div>
+            <div class="form-group">
+                <label for="Color">Color</label>
+                <input type="text" id="Color" class="form-control" formControlName="Color">
+            </div>
+            <button type="submit" class="btn btn-success mt-3">Add Vehicle</button>
+        </form>
+    </div>
+    
+</div>

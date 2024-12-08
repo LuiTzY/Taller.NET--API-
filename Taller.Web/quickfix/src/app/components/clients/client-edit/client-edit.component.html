@@ -1,0 +1,35 @@
+<div class="container">
+
+    <div class="card">
+
+        <h2 class="text-center m-4">Editar Cliente {{clientInfo.nombre}}</h2>
+
+        <form class="form-group m-5" [formGroup]="clientEditForm" (submit)="onSubmit()">
+        
+            <label for="Nombre" class="form-label"> <strong>Nombre del cliente</strong></label>
+            <input type="text" formControlName="Nombre" [value]="clientInfo.nombre" class="form-control">
+        
+           
+        
+            <label for="Nombre" class="form-label"> <strong>Email del cliente</strong></label>
+            <input type="email" formControlName="Email" [value]="clientInfo.email" class="form-control">
+            
+            @if (clientEditForm.get("Email")?.hasError("email")) {
+                <span>
+                <strong class=" text-danger m-5"> El Email del cliente es invalido</strong>
+                <br>
+                </span>
+            }
+        
+            <label for="Telefono" class="form-label"> <strong>Telefono del cliente</strong></label>
+            <input type="text" formControlName="Telefono" [value]="clientInfo.email" class="form-control">
+            
+            <label for="Direccion" class="form-label"><strong>Direccion del cliente</strong></label>
+            <input type="text" formControlName="Direccion" [value]="clientInfo.direccion" class="form-control">
+            
+            <button class="btn btn-primary mt-5" [disabled]="clientEditForm.invalid" [ngClass]="clientEditForm.invalid ? 'btn btn-danger' : 'btn btn-primary'">Actualizar cliente</button>
+        
+        </form>
+
+    </div>
+</div>

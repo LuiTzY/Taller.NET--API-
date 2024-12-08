@@ -1,0 +1,69 @@
+
+<nav style="background-color: rgb(26, 24, 24);" class="navbar navbar-expand-lg" data-bs-theme="dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">QuickFix</a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+
+       
+
+        <!--Rutas de autenticacion para el Usuario-->
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Authentication
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['auth/login']">Login</a></li>
+            <li><a class="dropdown-item" [routerLink]="['auth/register']">Sign Up</a></li>
+          </ul>
+        </li>
+
+        <!--Rutas de relacionadas a los clientes-->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Clients
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['clients/client-list']">List Clients</a></li>
+            <li><a class="dropdown-item" [routerLink]="['clients/client-add']" >Register Client</a></li>
+          </ul>
+        </li>
+
+
+        <!--Rutas de relacionadas a los empleados-->
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Employees
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['/employees/employees-list']">List Employees</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/employees/employees-add']">Register Employee</a></li>
+          </ul>
+        </li>
+
+        <!--Rutas de relacionadas a los vehiculos de los clientes-->
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Vehicles
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" [routerLink]="['/vehicles/vehicles-list']">List Vehicles</a></li>
+            <li><a class="dropdown-item" [routerLink]="['/vehicles/vehicles-add']">Register Vehicles</a></li>
+          </ul>
+        </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!--Se encarga de loader el componente al que se le haga click en el navbar-->
+<router-outlet></router-outlet>

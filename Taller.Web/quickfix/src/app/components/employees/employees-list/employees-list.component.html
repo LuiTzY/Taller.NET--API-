@@ -1,0 +1,39 @@
+
+<div class="container mt-4">
+    <h2>Listado de empleados</h2>
+
+    <table datatable [dtOptions]="dtOptions" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Ordenes de trabajo</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (employee of employees; track $index) {
+                <tr>
+                    <td>{{ employee.empleadoId}}</td>
+                    <td>{{ employee.nombre}}</td>
+                    <td>{{ employee.apellido }}</td>
+                    <td>{{ employee.email}}</td>
+                    <td>{{ employee.telefono }}</td>
+                    <td>{{employee.ordenesTrabajo?.length}}</td>
+                    
+                    <td >
+                        <button [routerLink]="['/employees/employee-edit', employee.empleadoId]" class="btn btn-primary m-3">Edit</button>
+                        <button (click)="deleteEmployee(employee.empleadoId)" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+
+
+</div>
+

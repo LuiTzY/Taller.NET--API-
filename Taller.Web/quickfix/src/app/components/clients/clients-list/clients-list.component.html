@@ -1,0 +1,33 @@
+
+<div class="container mt-4">
+    <h2>Listado de clientes</h2>
+
+    <table datatable [dtOptions]="dtOptions" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Telefono</th>
+                <th>Direccion</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (client of clients; track $index) {
+                <tr>
+                    <td>{{ client.clienteId }}</td>
+                    <td>{{ client.nombre }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.telefono }}</td>
+                    <td>{{ client.direccion }}</td>
+                    <td >
+                        <button [routerLink]="['/clients/client-edit', client.clienteId]" class="btn btn-primary m-3">Edit</button>
+                        <button (click)="deleteClient(client.clienteId)" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>

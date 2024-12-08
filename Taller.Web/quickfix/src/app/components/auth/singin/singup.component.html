@@ -1,0 +1,50 @@
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4" >QuickFix Register </h2>
+                    
+                    <form [formGroup]="singupForm" (submit)="singup()">
+
+                        <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="bi bi-person-fill"></i></span> 
+                            <input type="text" class="form-control" formControlName="username" placeholder="Your username" >
+                            <br>
+                            
+                        </div>
+                        <!-- Errores de Validaciones-->
+                        @if (singupForm.get("username")?.hasError("required") && singupForm.get("username")?.touched) {
+                            <div class="alert alert-danger" role="alert">
+                                Username is required
+                              </div>
+                         }
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">
+                                <i class="bi bi-shield-lock-fill"></i>
+                            </span>
+                            
+                            <input type="password" class="form-control" formControlName="password"  placeholder="Your password" required>
+
+                        </div>
+                        
+                            <!-- Errores de Validaciones-->
+                            @if (singupForm.get("password")?.hasError("required") && singupForm.get("password")?.touched) {
+                                <div class="alert alert-danger" role="alert">
+                                    Password is required 
+                                  </div>
+                             }
+                             @else if (singupForm.get("password")?.hasError("minlength")) {
+                                <div class="alert alert-danger" role="alert">
+                                    Password must have 6 digits, introduce correct password 
+                                  </div>
+                             }
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+                
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="container">
+
+    <div class="card m-5">
+
+        <h2 class="text-center m-4">Add Client to quickfix</h2>
+
+        <form class="form-group m-5" [formGroup]="clientForm" (submit)="onSubmit()">
+        
+            <label for="Nombre" class="form-label"> <strong>Nombre del cliente</strong></label>
+            <input type="text" formControlName="Nombre" class="form-control">
+        
+            @if (clientForm.get("Nombre")?.hasError("pattern")) {
+                <span>
+                <strong>El nombre del cliente es requerido</strong>
+                </span>
+            }
+        
+            <label for="Nombre" class="form-label" >Email del cliente</label>
+            <input type="email" formControlName="Email" class="form-control">
+            
+            @if (clientForm.get("Email")?.hasError("pattern")) {
+                <span>
+                <strong> El Email del cliente es requerido</strong>
+                </span>
+            }
+        
+            <label for="Telefono" class="form-label"> <strong>Telefono del cliente</strong></label>
+            <input type="text" formControlName="Telefono" class="form-control">
+            
+            <label for="Direccion" class="form-label"><strong>Direccion del cliente</strong></label>
+            <input type="text" formControlName="Direccion" class="form-control">
+            
+            <button class="btn btn-primary mt-5" [disabled]="clientForm.invalid" [ngClass]="clientForm.invalid ? 'btn btn-danger': 'btn btn-primary' "> Add client</button>
+        
+        </form>
+
+    </div>
+</div>

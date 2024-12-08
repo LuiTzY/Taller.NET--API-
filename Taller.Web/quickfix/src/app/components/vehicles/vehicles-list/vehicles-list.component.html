@@ -1,0 +1,42 @@
+
+<div class="container mt-4">
+    <h2>Listado de Vehiculos</h2>
+
+    <table datatable [dtOptions]="dtOptions" class="display">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <!-- <th>Cliente</th> -->
+                <th>Color</th>
+                <th>Placa</th>
+                <th>Modelo</th>
+                <th>Color</th>
+                <th>Mantenimientos</th>
+                <th>Ordenes Trabajos</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (vehicle of vehicles; track $index) {
+                <tr>
+                    <td>{{vehicle.vehiculoId}}</td>
+                    <!-- <td>{{ vehicle.cliente.nombre}}</td> -->
+                    <!-- <td>{{ vehicle.Año }}</td> -->
+                    <td>{{ vehicle.color }}</td>
+                    <td>{{ vehicle.placa }}</td>
+                    <td>{{ vehicle.modelo }}</td>
+                    <td>{{ vehicle.color }}</td>
+                    <td> {{ vehicle.historialMantenimientos.length }} </td>
+                    <td> {{ vehicle.ordenesTrabajos.length }} </td>
+                    
+                    <td >
+                        <button [routerLink]="['/vehicles/vehicles-edit', vehicle.vehiculoId]" class="btn btn-primary m-3">Edit</button>
+                        <button (click)="deleteVehiculo(vehicle.vehiculoId)" class="btn btn-danger">Delete</button>
+                    </td>
+                </tr>
+            }
+            
+        </tbody>
+    </table>
+</div>
+
